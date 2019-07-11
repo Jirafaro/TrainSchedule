@@ -1,12 +1,11 @@
- // Your web app's Firebase configuration
- const firebaseConfig = {
-    apiKey: "AIzaSyBa_M8E3zZubK7k6HAVo_BBLAwXaDEfpkE",
-    authDomain: "trainscheduler-3c13f.firebaseapp.com",
-    databaseURL: "https://trainscheduler-3c13f.firebaseio.com",
-    projectId: "trainscheduler-3c13f",
+var firebaseConfig = {
+    apiKey: "AIzaSyAF3o8mM_d7SRYzjMdO2_euK3SXRGWhzRA",
+    authDomain: "trainproject-60fd1.firebaseapp.com",
+    databaseURL: "https://trainproject-60fd1.firebaseio.com",
+    projectId: "trainproject-60fd1",
     storageBucket: "",
-    messagingSenderId: "781806976060",
-    appId: "1:781806976060:web:9579f494c0be1199"
+    messagingSenderId: "193573108234",
+    appId: "1:193573108234:web:37b2686c84a75b18"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
@@ -15,7 +14,8 @@
   database.ref().on('child_added', function(snapshot){
     // console.log(snapshot.val().TrainName); gets name of Train
    
-    let waittime = moment().diff(moment(snapshot.val().frequency), 'minutes');
+    let waittime = moment().startOf('frequency').fromNow();
+    // diff(moment(snapshot.val().frequency), 'minutes');
     let total = waittime * snapshot.val().Rate;
    
     let tableRow = $('<tr>');
@@ -24,9 +24,9 @@
     let frequencyRow = $('<td>').text(snapshot.val().frequency);
     let waittimeRow = $('<td>').text(waittime);
     let RateRow = $('<td>').text(snapshot.val().Rate);
-    let totalRow = $('<td>').text(total);
+
     
-    tableRow.append(nameRow, DestinationRow, frequencyRow, waittimeRow, RateRow, totalRow);
+    tableRow.append(nameRow, DestinationRow, frequencyRow, waittimeRow, RateRow);
     $('tbody').append(tableRow);
 })
 $('button').on('click', function(e){
