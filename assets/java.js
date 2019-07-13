@@ -32,7 +32,7 @@ var firebaseConfig = {
     let RateRow = $('<td>').text(snapshot.val().Rate);
 
     
-    tableRow.append(nameRow, DestinationRow, RateRow, waittimeRow,frequencyRow );
+    tableRow.append(nameRow, DestinationRow, frequencyRow, waittimeRow,RateRow );
     $('tbody').append(tableRow);
 })
 $('button').on('click', function(e){
