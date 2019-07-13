@@ -12,11 +12,17 @@ var firebaseConfig = {
   let database = firebase.database();
  
   database.ref().on('child_added', function(snapshot){
-    // console.log(snapshot.val().TrainName); gets name of Train
-   
-    let waittime = moment().startOf('frequency').fromNow();
+    console.log(snapshot.val().TrainName); //gets name of Train
+    console.log(snapshot.val());
+    console.log(moment(snapshot.val().frequency_d).format('m'));
+    
+    let waittime = moment().diff(moment(snapshot.val().frequency_d).format('m'));
+    console.log(waittime);
+    let arrival = Rate - waittime;
+    console.log(arrival);
+    
     // diff(moment(snapshot.val().frequency), 'minutes');
-    let total = waittime * snapshot.val().Rate;
+    
    
     let tableRow = $('<tr>');
     let nameRow = $('<td>').text(snapshot.val().TrainName);
@@ -35,7 +41,6 @@ $('button').on('click', function(e){
     let Destination = $('#Destination').val().trim();
     let frequency = $('#frequency').val().trim();
     let Rate = $('#Rate').val().trim();
-    console.log(Rate);
     database.ref().push({
         TrainName: name,
         Destination: Destination,
