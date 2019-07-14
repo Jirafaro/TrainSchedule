@@ -10,36 +10,14 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   let database = firebase.database();
- 
-  database.ref().on('child_added', function(snapshot){
-    console.log(snapshot.val().TrainName); //gets name of Train
-    console.log(snapshot.val());
-    console.log(moment(snapshot.val().frequency_d).format('m'));
-    
-    let waittime = moment().diff(moment(snapshot.val().frequency_d).format('m'));
-    console.log(waittime);
-    let arrival = Rate - waittime;
-    console.log(arrival);
-    
-    // diff(moment(snapshot.val().frequency), 'minutes');
-    
-   
-    let tableRow = $('<tr>');
-    let nameRow = $('<td>').text(snapshot.val().TrainName);
-    let DestinationRow = $('<td>').text(snapshot.val().Destination);
-    let frequencyRow = $('<td>').text(snapshot.val().frequency);
-    let waittimeRow = $('<td>').text(waittime);
-    let RateRow = $('<td>').text(snapshot.val().Rate);
 
-    
-    tableRow.append(nameRow, DestinationRow, frequencyRow, waittimeRow,RateRow );
-    $('tbody').append(tableRow);
-})
-$('button').on('click', function(e){
+  //onclick to add user input to firebase
+
+$('button').on('click', function (e) {
     e.preventDefault();
     let name = $('#TrainName').val().trim();
     let Destination = $('#Destination').val().trim();
-    let frequency = $('#frequency').val().trim();
+    let frequency = $('#firstTrain').val().trim();
     let Rate = $('#Rate').val().trim();
     database.ref().push({
         TrainName: name,
@@ -49,6 +27,40 @@ $('button').on('click', function(e){
     });
     $('#TrainName').val('');
     $('#Destination').val('');
-    $('#frequency').val('');
+    $('#firstTrain').val('');
     $('#Rate').val('');
+})
+ var frequency = 0;
+  database.ref().on('child_added', function(snapshot){
+    console.log(snapshot.val().TrainName); //gets name of Train
+    console.log(snapshot.val().Rate); // train rate (minutes)
+    // current time in minutes only
+    let b = moment(snapshot.val().frequency_d).format('m');
+    console.log(b)
+    // Difference between current time in minutes and the rate of train travel
+    var Ratet = moment().diff(moment(snapshot.val().b) % (snapshot.val().Rate));
+    console.log(Ratet);
+    // 
+    var convertrate = 
+    console.log(convertrate)
+    
+  
+    let arrival = Ratet % b;
+    // console.log(arrival);
+    let waittime = moment().add(arrival, "m").format("hh:mm");
+    // console.log(waittime);
+    
+   
+    
+   // dynamically push stored data to the table
+    let tableRow = $('<tr>');
+    let nameRow = $('<td>').text(snapshot.val().TrainName);
+    let DestinationRow = $('<td>').text(snapshot.val().Destination);
+    let frequencyRow = $('<td>').text(snapshot.val().frequency);
+    let waittimeRow = $('<td>').text(waittime);
+    let RateRow = $('<td>').text(snapshot.val().Rate);
+
+    
+    tableRow.append(nameRow, DestinationRow, frequencyRow, waittimeRow, RateRow);
+    $('tbody').append(tableRow);
 })
